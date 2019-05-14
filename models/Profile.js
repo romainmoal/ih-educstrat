@@ -41,5 +41,5 @@ const ProjectProfile = new Schema({
 });
 
 
-const Profile = mongoose.model('Project', ProjectProfile);
+const Profile = mongoose.model('Profile', ProjectProfile);
 module.exports = Profile;

@@ -1,0 +1,22 @@
+<h1>Welcome to EducStrat!</h1>
+
+<div id="search-section">
+  <form id="form" action="/main" method="POST">
+    <div>
+      <label for="school">Find your school/university<br>
+      <input type="text" name="school"
+      placeholder="Enter a school...">
+    </div>
+    <div>
+      <label for="jobTitle">Find your job<br>
+      <input type="text" name="jobTitle"
+      placeholder="Enter a job...">
+    </div>
+    <button type="submit">Search</button>
+  </form>
+</div>
+
+<h1>Profile</h1>
+{{#each testProfile}}
+    <p>{{this.schools}}</p>
+{{/each}}
