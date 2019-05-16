@@ -1,4 +1,3 @@
-// Seeds file that remove all users and create 2 new users
 module.exports = [
   {
     general: {
@@ -122,8 +121,6 @@ module.exports = [
     allSkills: ""
   }
 ]
-
-// To execute this seed, run from the root of the project
 
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
