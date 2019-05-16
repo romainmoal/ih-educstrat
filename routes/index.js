@@ -27,6 +27,14 @@ router.get("/sankey", (req, res, next) => {
     .catch(error => {
       console.log("Error while getting the profile from the DB: ", error);
     });
+  router.post("/main", (req, res, next) => {
+    Profile.find({
+      schools: { $regex: "^(?i)" + req.body.search }
+    }).then(profiles => {
+      res.send({ liste: profiles });
+      console.log(liste);
+    });
+  });
 });
 
 module.exports = router;

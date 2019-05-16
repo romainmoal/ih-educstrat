@@ -49,7 +49,6 @@ router.post('/signup', (req, res, next) => {
   })
 });
 
-
 // log in
 router.get('/login', (req, res, next) => {
   res.render('auth/login');
