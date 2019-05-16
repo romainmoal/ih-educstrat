@@ -40,7 +40,6 @@ const ProjectProfile = new Schema({
   },
   skills: [
     {
-      // a ajouter, le numéro du job ?
       name: String,
       endorsements: String
     }

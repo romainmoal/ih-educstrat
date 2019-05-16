@@ -9,14 +9,24 @@ router.get('/', (req, res, next) => {
 
 router.get('/main', (req, res, next) => {
   Profile.find()
-    .then(testProfile => {
-      console.log('Retrieved books from DB:', testProfile);
-      res.render('main', { testProfile: testProfile });
+    .then(ProfileModel => {
+      console.log('Retrieved books from DB:', ProfileModel);
+      res.render('main', { ProfileModel: ProfileModel });
     })
     .catch(error => {
       console.log('Error while getting the profile from the DB: ', error);
     })
 });
 
+router.post("/main", (req, res, next) => {
+  Profile.find(
+    {
+      schools: { $regex: "^(?i)" + req.body.search }
+    }
+  ).then(profiles => {
+    res.send({ liste: profiles });
+    console.log(liste);
+  });
+});
 
 module.exports = router;

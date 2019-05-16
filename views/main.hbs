@@ -4,19 +4,28 @@
   <form id="form" action="/main" method="POST">
     <div>
       <label for="school">Find your school/university<br>
-      <input type="text" name="school"
+      <input type="text" id="searchSchool" name="school"
       placeholder="Enter a school...">
     </div>
     <div>
       <label for="jobTitle">Find your job<br>
-      <input type="text" name="jobTitle"
+      <input type="text" id="searchJob" name="jobTitle"
       placeholder="Enter a job...">
     </div>
     <button type="submit">Search</button>
   </form>
 </div>
 
-<h1>Profile</h1>
-{{#each testProfile}}
-    <p>{{this.schools}}</p>
-{{/each}}
+<ul id="listeSchool"></ul>
+
+{{!-- <h1>Profile</h1>
+{{#each ProfileModel}}
+    <p>{{this.schools.0.schoolName}}</p>
+    <p>{{this.schools.1.schoolName}}</p>
+    <p>{{this.schools.2.schoolName}}</p>
+    <p>{{this.schools.3.schoolName}}</p>
+{{/each}} --}}
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js"></script>
+<script src="/javascripts/searchSchool.js"></script>
