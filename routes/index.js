@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Profile = require("../models/Profile.js");
+const ProfileCurricular = require("../models/ProfileCurricular.js");
 
 /* GET home page */
 router.get("/", (req, res, next) => {
@@ -19,19 +20,21 @@ router.get("/main", (req, res, next) => {
 });
 
 router.get("/sankey", (req, res, next) => {
-  Profile.find()
-    .then(ProfileModel => {
-      console.log("Retrieved results from DB:", ProfileModel);
-      res.render("sankey", { ProfileModel: ProfileModel });
+  ProfileCurricular.find()
+    .then(ProfileCurricularModel => {
+      console.log("Retrieved results from DB:", ProfileCurricularModel);
+      res.render("sankey", {
+        ProfileCurricularModel: JSON.stringify(ProfileCurricularModel)
+      });
     })
     .catch(error => {
       console.log("Error while getting the profile from the DB: ", error);
     });
   router.post("/main", (req, res, next) => {
-    Profile.find({
+    ProfileCurricular.find({
       schools: { $regex: "^(?i)" + req.body.search }
-    }).then(profiles => {
-      res.send({ liste: profiles });
+    }).then(profilesCurricular => {
+      res.send({ liste: profilesCurricular });
       console.log(liste);
     });
   });

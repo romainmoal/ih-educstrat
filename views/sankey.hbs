@@ -16,11 +16,27 @@
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
 <div id="container"></div>
-{{#each ProfileModel}}
-<p>{{this.schools.4.schoolName}} / {{this.schools.3.schoolName}} / {{this.schools.2.schoolName}} /
-    {{this.schools.1.schoolName}} / {{this.schools.0.schoolName}}</p>
+{{#each ProfileCurricularModel}}
+<p>{{this.curriculumJobs.0.from.company}} to {{this.curriculumJobs.0.to.company}}</p>
 {{/each}}
 <script>
+    var ProfileCurricularModel = {{{ ProfileCurricularModel }}}
+    var target = "Capgemini";
+    var results = [];
+
+
+    targetProfiles = ProfileCurricularModel.filter(o => this.curriculumJobs.Object.keys(o).some(k => o[k].toLowerCase().includes(target.toLowerCase())));
+
+    targetProfiles.forEach(sc => {
+        sc.curriculumJobs.forEach(job => {
+            if (job.from.company && job.to.company) {
+                results.push([job.from.company, job.to.company, 1]);
+            }
+        });
+    });
+
+
+
     Highcharts.chart('container', {
 
         title: {
@@ -28,13 +44,7 @@
         },
         series: [{
             keys: ['from', 'to', 'weight'],
-            data: [
-                ['Spain', 'England', 1],
-                ['Brazil', 'Portugal', 1],
-                ['Brazil', 'France', 1],
-                ['Brazil', 'Spain', 1],
-                ['Brazil', 'England', 1],
-            ],
+            data: results.slice(600, 700),
             type: 'sankey',
             name: 'Sankey demo series'
         }]
