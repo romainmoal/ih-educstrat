@@ -1,3 +1,23 @@
+// // lorsque l'on clique sur l'un des résultats de la recherche, il se met dans l'input
+// var searchResult = document.getElementsByClassName("list-group-item")
+
+// searchResult.onclick = function(){
+//   var search_job = document.getElementById("searchJob");
+//   searchResult = search_job.innerHTML;
+// };
+
+// lorsque l'on clique sur l'un des résultats de la recherche, il se met dans l'input
+inputComplete = function(){
+  let searchResult = document.getElementById(profile.schools[0].schoolName)
+  //console.log(searchResult.innerHTML)
+  let search_school = document.getElementById("searchSchool");
+  searchResult.onclick = function(){
+    searchResult = search_school.innerHTML;
+    console.log(searchResult)
+  };
+}
+
+
 // autocomplétion recherche par school
 
 document.addEventListener(
@@ -20,7 +40,9 @@ document.addEventListener(
           let schoolArray = []
           for (let profile of response.data.liste) {
             if (profile.schools[0].schoolName !== undefined && searchValue != ""){
-              let newLineSearch = `<li class="list-group-item list-group-item-action" ng-repeat="item in list track by $index">${profile.schools[0].schoolName}</li>`
+              let newLineSearch = `
+              <li class="list-group-item list-group-item-action" id="${profile.schools[0].schoolName}"
+              ng-repeat="item in list track by $index">${profile.schools[0].schoolName}</li>`
               if (!liste_html.innerHTML.includes(newLineSearch)){
                 schoolArray.push(newLineSearch)
                 liste_html.innerHTML += newLineSearch;
@@ -31,10 +53,10 @@ document.addEventListener(
     }
 
     searchHandler();
+    inputComplete();
   },
   false
 );
-
 
 // stringSimilarity
 // var stringSimilarity = require('string-similarity');
