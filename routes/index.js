@@ -55,17 +55,17 @@ router.post("/main", (req, res, next) => {
       // res.redirect("/sankey");
       //console.log(profiles);
     })
-    .then(ProfileModel => {
-      res.redirect("sankey");
-    })
+    // .then(ProfileModel => {
+    //   res.redirect("sankey");
+    // })
     .catch(error => {
       console.log("Error while getting the profile from the DB: ", error);
     });
 });
 
 router.post("/main", (req, res, next) => {
-  const jobTitle = req.body.jobTitle;
-  const school = req.body.school;
+  let jobTitle = req.body.jobTitle;
+  let school  = req.body.school;
   
   if (jobTitle === "" || school === "") {
     res.render("main", { errorMessage: "Please fill one search field first" });
@@ -76,9 +76,31 @@ router.post("/main", (req, res, next) => {
     res.render("main", { errorMessage: "You cannot define a career path based on two criterias. Pease fill only one field" });
     return;
   }
+
+  if (jobTitle === "" && school !== "") {
+    // res.redirect("/")
+    res.redirect("sankey/:school")
+  } else if (jobTitle !== "" && school === "") {
+    // res.redirect("/")
+    res.redirect("sankey/:jobTitle")
+  }
+
 });
 
-router.get("/sankey", (req, res, next) => {
+router.get("/sankey/:school", (req, res, next) => {
+  ProfileCurricular.find()
+    .then(ProfileCurricularModel => {
+      console.log("Retrieved results from DB:", ProfileCurricularModel);
+      res.render("sankey", {
+        ProfileCurricularModel: JSON.stringify(ProfileCurricularModel)
+      });
+    })
+    .catch(error => {
+      console.log("Error while getting the profile from the DB: ", error);
+    });
+});
+
+router.get("/sankey/:jobTitle", (req, res, next) => {
   ProfileCurricular.find()
     .then(ProfileCurricularModel => {
       console.log("Retrieved results from DB:", ProfileCurricularModel);

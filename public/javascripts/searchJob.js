@@ -1,3 +1,14 @@
+// lorsque l'on clique sur l'un des résultats de la recherche, il se met dans l'input
+inputComplete = function(){
+  let searchResult = document.getElementsByClassName("list-group-item")
+  console.log(searchResult)
+  let search_job   = document.getElementById("searchJob");
+  console.log(search_job)
+  searchResult.onclick = function(){
+    searchResult = search_job.innerHTML;
+  };
+}
+
 // autocomplétion recherche par job
 
 document.addEventListener(
@@ -19,11 +30,12 @@ document.addEventListener(
           liste_job = response.data.liste;
           for (let profile of response.data.liste) {
             if (profile.jobs[0].jobTitle !== undefined && searchJobValue != ""){
-              let newLineSearch = `<li class="list-group-item list-group-item-action" ng-repeat="item in list track by $index">${profile.jobs[0].jobTitle}</li>`
-              // let newLineSearch = `<option value="${profile.jobs[0].jobTitle}">${profile.jobs[0].jobTitle}</option>`            
+              let newLineSearch = `<li class="list-group-item list-group-item-action" ng-repeat="item in list track by $index">
+              ${profile.jobs[0].jobTitle}</li>`
               if (!listeJob_html.innerHTML.includes(newLineSearch)){
                 listeJob_html.innerHTML += newLineSearch;
               }
+              inputComplete();
             }
           }
         });
@@ -33,14 +45,6 @@ document.addEventListener(
   },
   false
 );
-
-// lorsque l'on clique sur l'un des résultats de la recherche, il se met dans l'input
-var searchResult = document.getElementsByClassName("list-group-item")
-
-searchResult.onclick = function(){
-  var search_job = document.getElementById("searchJob");
-  searchResult = search_job.innerHTML;
-};
 
 // $( ".list-group-item" ).click(function() {
 //   alert( "Handler for .click() called." );
