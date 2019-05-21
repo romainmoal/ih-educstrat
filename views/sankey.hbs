@@ -1,3 +1,29 @@
+{{!-- nav bar --}}
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top justify-content-end">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="nav navbar-nav navbar-right">
+      <li class="nav-item active">
+        <a class="nav-link" href="/main">New search <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">My saved searches</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Settings
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="/profile/edit">Change my account info</a>
+          <a class="dropdown-item" href="/logout">Logout</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
 <style>
     min-width: 300px;
     max-width: 800px;
@@ -19,9 +45,11 @@
 {{#each ProfileCurricularModel}}
 <p>{{this.curriculumJobs.0.from.company}} to {{this.curriculumJobs.0.to.company}}</p>
 {{/each}}
+
+
 <script>
     var ProfileCurricularModel = {{{ ProfileCurricularModel }}}
-    var target = "Capgemini";
+    var target = "Capgemini"; // on doit lier la recherche à ce champ
     var results = [];
 
 

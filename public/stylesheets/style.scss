@@ -6,6 +6,7 @@ body {
 a {
   color: #00B7FF;
 }
+
 #form {
   margin: 30px auto;
   width: 380px;
@@ -57,4 +58,15 @@ a {
   margin: 20px auto;
   padding: 20px;
   width: 100%;
+}
+
+// #horizontal {
+//   display: flex;
+//   flex-direction: row;
+// }
+
+h1 {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  text-align: center
 }

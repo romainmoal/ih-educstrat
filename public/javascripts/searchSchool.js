@@ -20,8 +20,7 @@ document.addEventListener(
           let schoolArray = []
           for (let profile of response.data.liste) {
             if (profile.schools[0].schoolName !== undefined && searchValue != ""){
-              // let newLineSearch = `<li><h4>${profile.schools[0].schoolName}</h4></li>`
-              let newLineSearch = `<li class="list-group-item" ng-repeat="item in list track by $index">${profile.schools[0].schoolName}</li>`
+              let newLineSearch = `<li class="list-group-item list-group-item-action" ng-repeat="item in list track by $index">${profile.schools[0].schoolName}</li>`
               if (!liste_html.innerHTML.includes(newLineSearch)){
                 schoolArray.push(newLineSearch)
                 liste_html.innerHTML += newLineSearch;

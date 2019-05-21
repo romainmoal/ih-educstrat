@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const User = require("../models/User.js");
 const Profile = require("../models/Profile.js");
 const ProfileCurricular = require("../models/ProfileCurricular.js");
 
@@ -10,9 +11,11 @@ const ensureLogin = require("connect-ensure-login");
 
 /* PUBLIC home page */
 router.get("/", (req, res, next) => {
-  res.render("index");
+  res.render("auth/login");
 });
 
+
+// search pages
 router.get("/main", ensureLogin.ensureLoggedIn(), (req, res, next) => {
   Profile.find()
     .then(ProfileModel => {
@@ -24,7 +27,10 @@ router.get("/main", ensureLogin.ensureLoggedIn(), (req, res, next) => {
     });
 });
 
-router.post("/main", ensureLogin.ensureLoggedIn(), (req, res, next) => {
+// router.post("/main", ensureLogin.ensureLoggedIn(), (req, res, next) => {
+router.post("/main", (req, res, next) => {
+  const jobTitle = req.body.jobTitle;
+  const school = req.body.school;
   Profile.find({
     $or: [
       {
@@ -46,6 +52,7 @@ router.post("/main", ensureLogin.ensureLoggedIn(), (req, res, next) => {
     .limit(30)
     .then(profiles => {
       res.send({ liste: profiles });
+      // res.redirect("/sankey");
       //console.log(profiles);
     })
     .then(ProfileModel => {
@@ -54,6 +61,21 @@ router.post("/main", ensureLogin.ensureLoggedIn(), (req, res, next) => {
     .catch(error => {
       console.log("Error while getting the profile from the DB: ", error);
     });
+});
+
+router.post("/main", (req, res, next) => {
+  const jobTitle = req.body.jobTitle;
+  const school = req.body.school;
+  
+  if (jobTitle === "" || school === "") {
+    res.render("main", { errorMessage: "Please fill one search field first" });
+    return;
+  }
+
+  if (jobTitle !== "" && school !== "") {
+    res.render("main", { errorMessage: "You cannot define a career path based on two criterias. Pease fill only one field" });
+    return;
+  }
 });
 
 router.get("/sankey", (req, res, next) => {

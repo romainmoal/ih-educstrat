@@ -8,7 +8,7 @@ const hbs          = require('hbs');
 const mongoose     = require('mongoose');
 const logger       = require('morgan');
 const path         = require('path');
-const User     = require("./models/User");
+const User       = require("./models/User");
 const bcrypt     = require("bcrypt");
 const saltRounds = 10;
 
@@ -16,7 +16,7 @@ const saltRounds = 10;
 const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const flash = require("connect-flash");
+const flash = require("connect-flash")
 
 mongoose
   .connect('mongodb://localhost/ih-educstrat', {useNewUrlParser: true})
@@ -45,6 +45,8 @@ app.use(require('node-sass-middleware')({
 }));
       
 // passeport
+app.use(flash());
+
 app.use(session({
   secret: "our-passport-local-strategy-app",
   resave: true,
@@ -62,6 +64,9 @@ passport.deserializeUser((id, cb) => {
   });
 });
 
+// app.use(passport.initialize());
+// app.use(passport.session());
+
 passport.use(new LocalStrategy((username, password, next) => {
   User.findOne({ username }, (err, user) => {
     if (err) {
@@ -71,7 +76,7 @@ passport.use(new LocalStrategy((username, password, next) => {
       return next(null, false, { message: "Incorrect username" });
     }
     if (!bcrypt.compareSync(password, user.password)) {
-      return next(null, false, { message: "Incorrect password" });
+      return next(null, false, { errorMessage: "Incorrect password" });
     }
 
     return next(null, user);
@@ -80,7 +85,6 @@ passport.use(new LocalStrategy((username, password, next) => {
 
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
