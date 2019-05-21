@@ -63,11 +63,11 @@ router.post("/main", (req, res, next) => {
     });
 });
 
-router.post("/main", (req, res, next) => {
+router.post("/sankey", (req, res, next) => {
   let jobTitle = req.body.jobTitle;
   let school  = req.body.school;
   
-  if (jobTitle === "" || school === "") {
+  if (jobTitle === "" && school === "") {
     res.render("main", { errorMessage: "Please fill one search field first" });
     return;
   }
@@ -76,41 +76,46 @@ router.post("/main", (req, res, next) => {
     res.render("main", { errorMessage: "You cannot define a career path based on two criterias. Pease fill only one field" });
     return;
   }
+  
+  if (jobTitle !== "" && school == "") {
+    ProfileCurricular.find()
+    .then(ProfileCurricularModel => {
+      console.log("Retrieved results from DB:", ProfileCurricularModel);
+      res.redirect(`/sankey?${jobTitle}`, {
+        ProfileCurricularModel: JSON.stringify(ProfileCurricularModel)
+      })
+    })
+    .catch(error => {
+      console.log("Error while getting the profile from the DB: ", error);
+    });
+  }
 
-  if (jobTitle === "" && school !== "") {
-    // res.redirect("/")
-    res.redirect("sankey/:school")
-  } else if (jobTitle !== "" && school === "") {
-    // res.redirect("/")
-    res.redirect("sankey/:jobTitle")
+  if (jobTitle == "" && school !== "") {
+    ProfileCurricular.find()
+    .then(ProfileCurricularModel => {
+      console.log("Retrieved results from DB:", ProfileCurricularModel);
+      res.redirect(`/sankey?${school}`, {
+        ProfileCurricularModel: JSON.stringify(ProfileCurricularModel)
+      })
+    })
+    .catch(error => {
+      console.log("Error while getting the profile from the DB: ", error);
+    });
   }
 
 });
 
-router.get("/sankey/:school", (req, res, next) => {
-  ProfileCurricular.find()
-    .then(ProfileCurricularModel => {
-      console.log("Retrieved results from DB:", ProfileCurricularModel);
-      res.render("sankey", {
-        ProfileCurricularModel: JSON.stringify(ProfileCurricularModel)
-      });
-    })
-    .catch(error => {
-      console.log("Error while getting the profile from the DB: ", error);
-    });
-});
-
-router.get("/sankey/:jobTitle", (req, res, next) => {
-  ProfileCurricular.find()
-    .then(ProfileCurricularModel => {
-      console.log("Retrieved results from DB:", ProfileCurricularModel);
-      res.render("sankey", {
-        ProfileCurricularModel: JSON.stringify(ProfileCurricularModel)
-      });
-    })
-    .catch(error => {
-      console.log("Error while getting the profile from the DB: ", error);
-    });
-});
+// router.get("/sankey", (req, res, next) => {
+//   ProfileCurricular.find()
+//     .then(ProfileCurricularModel => {
+//       console.log("Retrieved results from DB:", ProfileCurricularModel);
+//       res.render("sankey", {
+//         ProfileCurricularModel: JSON.stringify(ProfileCurricularModel)
+//       });
+//     })
+//     .catch(error => {
+//       console.log("Error while getting the profile from the DB: ", error);
+//     });
+// });
 
 module.exports = router;

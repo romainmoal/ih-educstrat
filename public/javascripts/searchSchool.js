@@ -1,10 +1,3 @@
-// // lorsque l'on clique sur l'un des résultats de la recherche, il se met dans l'input
-// var searchResult = document.getElementsByClassName("list-group-item")
-
-// searchResult.onclick = function(){
-//   var search_job = document.getElementById("searchJob");
-//   searchResult = search_job.innerHTML;
-// };
 
 // lorsque l'on clique sur l'un des résultats de la recherche, il se met dans l'input
 inputComplete = function(){
@@ -16,7 +9,6 @@ inputComplete = function(){
     console.log(searchResult)
   };
 }
-
 
 // autocomplétion recherche par school
 
@@ -58,6 +50,7 @@ document.addEventListener(
   false
 );
 
+
 // stringSimilarity
 // var stringSimilarity = require('string-similarity');
 
@@ -67,3 +60,12 @@ document.addEventListener(
 //       break
 //     } else {}
 // }
+
+
+// lorsque l'on clique sur l'un des résultats de la recherche, il se met dans l'input
+// var searchResult = document.getElementsByClassName("list-group-item")
+
+// searchResult.onclick = function(){
+//   var search_job = document.getElementById("searchJob");
+//   searchResult = search_job.innerHTML;
+// };
