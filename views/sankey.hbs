@@ -29,42 +29,68 @@
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/sankey.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
-
+<br>
+<br>
 <div id="container"></div>
 
 <script>
   var ProfileCurricularModel = {{{ ProfileCurricularModel }}}
-  var target = "Capgemini"; // on doit lier la recherche à ce champ
+  var type = window.location.href.slice(30, 36);
+  var target = "Ubisoft" // window.location.href.slice(37); // on doit lier la recherche à ce champ
   var results = [];
+  var indexes = [];
 
-  ProfileCurricularModel.forEach(sc => {
-    for (var i = 0; i < sc.curriculumJobs.length; i++) {
-      if (sc.curriculumJobs[i].to.company === target) {
-        var index = i;
+  if (type === "school") {
+    ProfileCurricularModel.forEach(sc => {
+      for (var i = 0; i < sc.curriculumSchools.length; i++) {
+        if (sc.curriculumSchools[i].to.schoolName === target) {
+          var index = i;
+          indexes.push(index);
+        }
       }
-    }
-    for (var j = 0; j < index + 1; j++) {
-      if (sc.curriculumJobs[j].from.company && sc.curriculumJobs[j].to.company) {
-        results.push([sc.curriculumJobs[j].from.company, sc.curriculumJobs[j].to.company, 1]);
+      for (var j = 0; j < index + 1; j++) {
+        if (sc.curriculumSchools[j].from.schoolName && sc.curriculumSchools[j].to.schoolName) {
+          results.push([sc.curriculumSchools[j].from.schoolName, sc.curriculumSchools[j].to.schoolName, 1]);
+        }
       }
-    }
-  });
+    });
+  } else if ("job") {
+    ProfileCurricularModel.forEach(sc => {
+      for (var i = 0; i < sc.curriculumJobs.length; i++) {
+        if (sc.curriculumJobs[i].to.company === target) {
+          var index = i;
+          indexes.push(index);
+        }
+      }
+      for (var j = 0; j < index + 1; j++) {
+        if (sc.curriculumJobs[j].from.company && sc.curriculumJobs[j].to.company) {
+          results.push([sc.curriculumJobs[j].from.company, sc.curriculumJobs[j].to.company, 1]);
+        }
+      }
+    });
+  }
 
 
+  var pathAmount = indexes.length;
 
   Highcharts.chart('container', {
 
     title: {
-      text: ''
+      text: pathAmount + ' CURRICULUMS ARE AVAILABLE'
     },
     series: [{
       keys: ['from', 'to', 'weight'],
       data: results,
       type: 'sankey',
       name: 'Search Results'
-    }]
+    }],
+    credits: {
+      enabled: false
+    }
 
   });
+
+
 
 
 </script>
