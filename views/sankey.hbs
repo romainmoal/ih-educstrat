@@ -1,6 +1,7 @@
 {{!-- nav bar --}}
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top justify-content-end">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -12,7 +13,8 @@
         <a class="nav-link" href="#">My saved searches</a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
           Settings
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -24,60 +26,42 @@
   </div>
 </nav>
 
-<style>
-    min-width: 300px;
-    max-width: 800px;
-    height: 400px;
-    margin: 1em auto;
-    border: 1px solid silver;
-    }
-
-    #csv {
-        display: none;
-    }
-</style>
-
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/sankey.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
 <div id="container"></div>
-{{#each ProfileCurricularModel}}
-<p>{{this.curriculumJobs.0.from.company}} to {{this.curriculumJobs.0.to.company}}</p>
-{{/each}}
-
 
 <script>
-    var ProfileCurricularModel = {{{ ProfileCurricularModel }}}
-    var target = "Capgemini"; // on doit lier la recherche à ce champ
-    var results = [];
+  var ProfileCurricularModel = {{{ ProfileCurricularModel }}}
+  var target = "Capgemini"; // on doit lier la recherche à ce champ
+  var results = [];
+
+  ProfileCurricularModel.forEach(sc => {
+    for (var i = 0; i < sc.curriculumJobs.length; i++) {
+      if (sc.curriculumJobs[i].to.company === target) {
+        var index = i;
+      }
+    }
+    for (var j = 0; j < index + 1; j++) {
+      if (sc.curriculumJobs[j].from.company && sc.curriculumJobs[j].to.company) {
+        results.push([sc.curriculumJobs[j].from.company, sc.curriculumJobs[j].to.company, 1]);
+      }
+    }
+  });
 
 
-    targetProfiles = ProfileCurricularModel.filter(o => this.curriculumJobs.Object.keys(o).some(k => o[k].toLowerCase().includes(target.toLowerCase())));
 
-    targetProfiles.forEach(sc => {
-        sc.curriculumJobs.forEach(job => {
-            if (job.from.company && job.to.company) {
-                results.push([job.from.company, job.to.company, 1]);
-            }
-        });
-    });
+  Highcharts.chart('container', {
 
+    series: [{
+      keys: ['from', 'to', 'weight'],
+      data: results,
+      type: 'sankey',
+      name: 'Search Results'
+    }]
 
-
-    Highcharts.chart('container', {
-
-        title: {
-            text: 'Results'
-        },
-        series: [{
-            keys: ['from', 'to', 'weight'],
-            data: results.slice(600, 700),
-            type: 'sankey',
-            name: 'Sankey demo series'
-        }]
-
-    });
+  });
 
 
 </script>
